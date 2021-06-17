@@ -3,11 +3,12 @@ import Search from './youtube/Search';
 import youtube from './youtube/Api';
 import VideoList from './youtube/VideoList';
 import VideoPlay from './youtube/VideoPlay';
+import './youtube/youtube.css';
 
 class App extends React.Component {
     state = {
         videos: [],
-        selectedVideo: null
+        selectedVideo: null,
     }
 
     searchSubmit = async (searchQuery) => {
@@ -16,32 +17,28 @@ class App extends React.Component {
                 q: searchQuery
             }
         })
-        this.setState({
+        this.setState({ 
             videos: response.data.items
         })
+        console.log(response.data);
     };
+
 
     selectVideo = (video) => {
         this.setState({selectedVideo: video})
     }
 
     render() {
+        
         return (
             <div className='ui container' style={{marginTop: '1em'}}>
                 <Search searchSubmit={this.searchSubmit}/>
-                <div className='ui grid'>
-                    <div className="ui row">
-                        <div className="eleven wide column">
-                            <VideoPlay video={this.state.selectedVideo}/>
-                        </div>
-                        <div className="five wide column">
-                            <VideoList selectVideo={this.selectVideo} videos={this.state.videos}/>
-                        </div>
-                    </div>
-                </div>
+                <VideoList selectVideo={this.selectVideo} videos={this.state.videos}/>
+                <VideoPlay video={this.state.selectedVideo} />
             </div>
         )
     }
 }
+
 
 export default App;

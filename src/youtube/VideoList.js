@@ -1,5 +1,6 @@
 import React from 'react';
 import VideoItem from './VideoItem';
+import './youtube.css';
 
 const VideoList = ({videos , selectVideo}) => {
     const renderedVideos =  videos.map((video) => {
@@ -7,7 +8,7 @@ const VideoList = ({videos , selectVideo}) => {
         console.log(video.id);
     });
 
-    return <div className='ui relaxed divided list'>{renderedVideos}</div>;
+    return <div className='listDiv'>{renderedVideos}</div>;
 };
 
 export default VideoList;
