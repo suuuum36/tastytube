@@ -11,6 +11,12 @@ const SearchPlace = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (!inputText.replace(/^\s+|\s+$/g, '')) {
+            alert('검색어를 입력해주세요!');
+            return false;
+        }
+
         setPlace(inputText);
     };
 
