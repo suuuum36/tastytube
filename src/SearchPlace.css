@@ -1,0 +1,9 @@
+#contentsBox {
+  overflow: hidden;
+}
+
+#menuBar {
+  height: 20px;
+  position: relative;
+  top: 0;
+}
