@@ -9,6 +9,7 @@ class App extends React.Component {
     state = {
         videos: [],
         selectedVideo: null,
+        showVideo : true
     }
 
     searchSubmit = async (searchQuery) => {
@@ -20,7 +21,7 @@ class App extends React.Component {
         this.setState({ 
             videos: response.data.items
         })
-        console.log(response.data);
+        // console.log(response.data);
     };
 
 
@@ -29,7 +30,6 @@ class App extends React.Component {
     }
 
     render() {
-        
         return (
             <div className='ui container' style={{marginTop: '1em'}}>
                 <Search searchSubmit={this.searchSubmit}/>

@@ -50,37 +50,38 @@
 .playingDiv {
     position: fixed;
     left: 30px;
-    bottom: 30px;
+    bottom: 33px;
     width: 300px;
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%);
     border-radius: 5px;
 }
 
-#show {
+.hideDiv {
+    height: 94px;
     position: fixed;
-    left: 30px;
     bottom: 30px;
-    width: 300px;
+    width: 34px;
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%);
     border-radius: 5px;
-}
-
-.pRemove {
-    height: 25px;
-}
-
-.pButton {
-    position: absolute;
-    right: 7px;
-    font-size: 13px;
-    top: 5px;
-    font-weight: 600;
     cursor: pointer;
 }
 
 /*취소 버튼 눌렀을 때 */
-#removed {
+#remove {
     display: none;
+}
+
+.pRemove {
+    height: 27px;
+}
+
+.pButton {
+    position: absolute;
+    right: 9px;
+    font-size: 13px;
+    top: 5px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 
@@ -110,4 +111,36 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+}
+
+.hideDiv2 {
+    right: 0;
+    height: 30px;
+    position: fixed;
+    width: 116px;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.hideMenu2 {
+    margin-top: 6px;
+    margin-bottom: 3px;
+    margin-left: 12px;
+    font-size: 13px;
+    display: flex;
+}
+
+.hideMenu1 {
+    margin-bottom: 6px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.downIcon1{
+    margin-right: 3px;
+}
+
+.downIcon2 {
+    margin-top: 3px;
+    margin-right: 7px;
 }
