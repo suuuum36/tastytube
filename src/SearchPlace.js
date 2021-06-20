@@ -77,6 +77,10 @@ const SearchPlace = ({ searchSubmit }) => {
   const [place, setPlace] = useState("");
   const [currentUser, setCurrentUser] = useState();
 
+  auth.onAuthStateChanged((user) => {
+    setCurrentUser(user);
+  });
+
   const onChange = (e) => {
     setInputText(e.target.value);
   };
