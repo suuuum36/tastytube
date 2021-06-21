@@ -38,52 +38,62 @@ const signInWithGoogle = () => {
 
 //찜 기능
 const setJjim = (places, currentUser) => {
-  currentUser&&db.collection("users")
-    .doc(currentUser && currentUser.uid)
-    .collection("JjimLists")
-    .doc(places.place_name)
-    .set({
-      placeName: places.place_name,
-      placeLocationX: places.x,
-      placeLocationY: places.y,
-    })
-    .then(() => {
-      console.log("Document successfully written");
-    })
-    .catch((error) => {
-      console.log("Error :", error);
-    });
+  currentUser &&
+    db
+      .collection("users")
+      .doc(currentUser && currentUser.uid)
+      .collection("JjimLists")
+      .doc(places.place_name)
+      .set({
+        placeName: places.place_name,
+        placeLocationX: places.x,
+        placeLocationY: places.y,
+      })
+      .then(() => {
+        console.log("Document successfully written");
+      })
+      .catch((error) => {
+        console.log("Error :", error);
+      });
 };
 
 //찜목록 불러오기
 const getJjim = (currentUser) => {
-  const jjimLists = []
-  currentUser&&db.collection("users")
-    .doc(currentUser && currentUser.uid)
-    .collection("JjimLists")
-    .get()
-    .then((jjimList) => {
-      jjimList.docs.map((doc)=>{
-        let list = doc.data();
-        jjimLists.push(list.placeName)
-      })
-    });
-    return jjimLists
+  const jjimLists = [];
+  currentUser &&
+    db
+      .collection("users")
+      .doc(currentUser && currentUser.uid)
+      .collection("JjimLists")
+      .get()
+      .then((jjimList) => {
+        jjimList.docs.map((doc) => {
+          let list = doc.data();
+          jjimLists.push({
+            place_name: list.placeName,
+            x: list.placeLocationX,
+            y: list.placeLocationY,
+          });
+        });
+      });
+  return jjimLists;
 };
 
 //찜목록 삭제
 const deleteJjim = (currentUser, docId) => {
-  currentUser&&db.collection("users")
-    .doc(currentUser && currentUser.uid)
-    .collection("JjimLists")
-    .doc(docId)
-    .delete()
-    .then(() => {
-      console.log("Document successfully deleted");
-    })
-    .catch((error) => {
-      console.log("Error :", error);
-    });
+  currentUser &&
+    db
+      .collection("users")
+      .doc(currentUser && currentUser.uid)
+      .collection("JjimLists")
+      .doc(docId)
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted");
+      })
+      .catch((error) => {
+        console.log("Error :", error);
+      });
 };
 
 export { firebase, auth, db, signInWithGoogle, setJjim, getJjim, deleteJjim };

@@ -10,7 +10,12 @@ import {
 
 const { kakao } = window;
 
-const MapContainer = ({ searchPlace, searchSubmit, currentUser }) => {
+const MapContainer = ({
+  searchPlace,
+  searchSubmit,
+  currentUser,
+  currentMode,
+}) => {
   let markers = [];
   const [jjimLists, setJjimLists] = useState();
   useEffect(() => {
@@ -29,15 +34,21 @@ const MapContainer = ({ searchPlace, searchSubmit, currentUser }) => {
     map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
 
     const ps = new kakao.maps.services.Places();
-
+    currentMode === "jjimlists" &&
+      (currentUser
+        ? displayPlaces(jjimLists)
+        : window.confirm("로그인 후 이용하시겠습니까?") &&
+          signInWithGoogle() &&
+          (currentUser = auth.user));
     ps.keywordSearch(searchPlace, placesSearchCB, {
       category_group_code: "FD6",
     });
-
     function placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         // 정상적으로 검색이 완료되면 검색 목록 및 마커를 표출합니다
-        displayPlaces(data);
+        currentMode === "search"
+          ? displayPlaces(data)
+          : displayPlaces(jjimLists);
 
         // 페이지 번호 표출
         displayPagination(pagination);
@@ -140,7 +151,8 @@ const MapContainer = ({ searchPlace, searchSubmit, currentUser }) => {
       });
       const jjimBtn = document.createElement("button");
       jjimBtn.innerHTML = jjimLists
-        ? jjimLists.indexOf(places.place_name) == -1
+        ? jjimLists.findIndex((obj) => obj.place_name === places.place_name) ==
+          -1
           ? "찜"
           : "취소"
         : "찜";
@@ -247,7 +259,7 @@ const MapContainer = ({ searchPlace, searchSubmit, currentUser }) => {
         el.removeChild(el.lastChild);
       }
     }
-  }, [searchPlace, currentUser]);
+  }, [searchPlace, currentUser, currentMode]);
 
   return (
     <div>
@@ -261,5 +273,5 @@ const MapContainer = ({ searchPlace, searchSubmit, currentUser }) => {
     </div>
   );
 };
-  
+
 export default MapContainer;

@@ -11,6 +11,9 @@ import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import Switch from '@material-ui/core/Switch';
 import logo from "./tastytube_logo.png";
 import { auth, db, signInWithGoogle } from "./Firebase";
 
@@ -76,6 +79,8 @@ const SearchPlace = ({ searchSubmit }) => {
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
   const [currentUser, setCurrentUser] = useState();
+  const [currentMode, setCurrentMode] = useState("search");
+
 
   auth.onAuthStateChanged((user) => {
     setCurrentUser(user);
@@ -107,6 +112,10 @@ const SearchPlace = ({ searchSubmit }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleChange = (event) => {
+    setCurrentMode(event.target.checked===true?"jjimlists":"search");
   };
 
   const menuId = "primary-search-account-menu";
@@ -178,6 +187,9 @@ const SearchPlace = ({ searchSubmit }) => {
               </form>
             </div>
             <div className={classes.grow} />
+            <FormGroup>
+              <FormControlLabel control={<Switch checked={currentMode==="search"?false:true} onChange={handleChange} aria-label="mode switch" />} label = "JJIMLIST" />
+            </FormGroup>
             <div className={classes.sectionDesktop}>
               <IconButton
                 edge="end"
@@ -206,6 +218,7 @@ const SearchPlace = ({ searchSubmit }) => {
         searchPlace={place}
         searchSubmit={searchSubmit}
         currentUser={currentUser}
+        currentMode = {currentMode}
       />
     </div>
   );
