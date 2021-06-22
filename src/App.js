@@ -1,10 +1,8 @@
 import React from 'react';
-import Search from './youtube/Search';
 import youtube from './youtube/Api';
 import VideoList from './youtube/VideoList';
 import VideoPlay from './youtube/VideoPlay';
 import './youtube/youtube.css';
-import MapContainer from './MapContainer';
 import SearchPlace from './SearchPlace';
 
 class App extends React.Component {

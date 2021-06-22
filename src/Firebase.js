@@ -1,16 +1,15 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
-import { useState, useEffect } from "react";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyA7iFXzpZ0kOYRuqiHdsev8HjLltaO209o",
+  authDomain: "tastytube-5d6d3.firebaseapp.com",
+  projectId: "tastytube-5d6d3",
+  storageBucket: "tastytube-5d6d3.appspot.com",
+  messagingSenderId: "966362210591",
+  appId: "1:966362210591:web:76873314e2651b8f25102a",
+  measurementId: "G-XLQ9EJ4LP9",
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -75,6 +74,8 @@ const getJjim = (currentUser) => {
             y: list.placeLocationY,
           });
         });
+      }).catch((error)=>{
+        console.log("Error :", error)
       });
   return jjimLists;
 };

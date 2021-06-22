@@ -2,6 +2,7 @@
   z-index: 10000;
   background-color: white;
   position: absolute;
+  top : 64px;
   right: 0px;
   width: 490px;
   box-shadow: -4px 3px 5px 0px rgb(0 0 0 / 27%);
@@ -125,7 +126,7 @@
 .hideDiv2 {
   background-color: white;
   z-index: 10000;
-  top: 50px;
+  top: 64px;
   right: 0;
   height: 30px;
   position: fixed;
