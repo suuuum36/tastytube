@@ -36,14 +36,14 @@ const MapContainer = ({
     const ps = new kakao.maps.services.Places();
     currentMode === "jjimlists" &&
       (currentUser
-        ? jjimLists[0]&&displayPlaces(jjimLists)
+        ? jjimLists[0] && displayPlaces(jjimLists)
         : window.confirm("로그인 후 이용하시겠습니까?") &&
           signInWithGoogle() &&
           (currentUser = auth.user));
     ps.keywordSearch(searchPlace, placesSearchCB, {
       category_group_code: "FD6",
     });
-    function placesSearchCB(data, status) {
+    function placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         // 정상적으로 검색이 완료되면 검색 목록 및 마커를 표출합니다
         currentMode === "search"
@@ -51,6 +51,7 @@ const MapContainer = ({
           : displayPlaces(jjimLists);
 
         // 페이지 번호 표출
+        displayPagination(pagination);
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         alert("검색 결과가 존재하지 않습니다.");
       } else if (status === kakao.maps.services.Status.ERROR) {
@@ -136,13 +137,13 @@ const MapContainer = ({
           '<span class="jibun gray">' +
           places.address_name +
           "</span>";
-      } else if(places.address_name) {
+      } else if (places.address_name) {
         itemStr += "<span>" + places.address_name + "</span>";
-      }
-      else itemStr+=""
+      } else itemStr += "";
 
-      if(places.phone) itemStr += '<span class="tel">' + places.phone + "</span>" + "</div>";
-      else itemStr +="<span>\n</span></div>"
+      if (places.phone)
+        itemStr += '<span class="tel">' + places.phone + "</span>" + "</div>";
+      else itemStr += "<span>\n</span></div>";
       el.innerHTML = itemStr;
       el.className = "item";
       el.addEventListener("click", function (e) {
@@ -171,19 +172,17 @@ const MapContainer = ({
         currentUser && jjimBtn.innerHTML === "찜"
           ? (jjimBtn.innerHTML = "취소")
           : (jjimBtn.innerHTML = "찜");
-        if(currentMode==="jjimlists"){
+        if (currentMode === "jjimlists") {
           el.remove();
           markers[index].setMap(null);
-          infowindow.close()
-        }
-        else{
-          markers[index].setMap(null)
-          const placePosition = new kakao.maps.LatLng(places.y, places.x)
-          if(jjimBtn.innerHTML==="찜"){
-            const marker = addMarker(placePosition, index, false)
-          }
-          else{
-            const marker = addMarker(placePosition, index, true)
+          infowindow.close();
+        } else {
+          markers[index].setMap(null);
+          const placePosition = new kakao.maps.LatLng(places.y, places.x);
+          if (jjimBtn.innerHTML === "찜") {
+            const marker = addMarker(placePosition, index, false);
+          } else {
+            const marker = addMarker(placePosition, index, true);
           }
         }
       });
@@ -196,7 +195,8 @@ const MapContainer = ({
     function addMarker(position, idx, jjimLists) {
       const blueMarkerImageSrc =
           "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png",
-          starMarkerImageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+        starMarkerImageSrc =
+          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
         imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
         imgOptions = {
           spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
@@ -208,27 +208,33 @@ const MapContainer = ({
           imageSize,
           imgOptions
         ),
-        starMarkerImage = new kakao.maps.MarkerImage(starMarkerImageSrc, imageSize)
+        starMarkerImage = new kakao.maps.MarkerImage(
+          starMarkerImageSrc,
+          imageSize
+        );
 
-      if(jjimLists===false||(jjimLists!==true&&jjimLists.findIndex((obj)=>obj.x==position.La)===-1)){
+      if (
+        jjimLists === false ||
+        (jjimLists !== true &&
+          jjimLists.findIndex((obj) => obj.x == position.La) === -1)
+      ) {
         const marker = new kakao.maps.Marker({
           position: position, // 마커의 위치
           image: blueMarkerImage,
-        })
+        });
         marker.setMap(map); // 지도 위에 마커를 표출
-        markers[idx]=marker; // 배열에 생성된 마커를 추가
-      return marker;
-      }else{
+        markers[idx] = marker; // 배열에 생성된 마커를 추가
+        return marker;
+      } else {
         const marker = new kakao.maps.Marker({
           position: position, // 마커의 위치
           image: starMarkerImage,
-        })
+        });
         marker.setMap(map); // 지도 위에 마커를 표출
-        markers[idx]=marker; // 배열에 생성된 마커를 추가
+        markers[idx] = marker; // 배열에 생성된 마커를 추가
 
-      return marker;
+        return marker;
       }
-      
     }
 
     // 지도 위에 표시되고 있는 마커를 모두 제거
@@ -237,6 +243,37 @@ const MapContainer = ({
         markers[i].setMap(null);
       }
       markers = [];
+    }
+
+    // 검색결과 목록 하단에 페이지번호를 표시하는 함수
+    function displayPagination(pagination) {
+      let paginationEl = document.getElementById("pagination");
+      let fragment = document.createDocumentFragment();
+      let i;
+
+      // 기존에 추가된 페이지번호를 삭제
+      while (paginationEl.hasChildNodes()) {
+        paginationEl.removeChild(paginationEl.lastChild);
+      }
+
+      for (i = 1; i <= pagination.last; i++) {
+        let el = document.createElement("a");
+        el.href = "#";
+        el.innerHTML = i;
+
+        if (i === pagination.current) {
+          el.className = "on";
+        } else {
+          el.onclick = (function (i) {
+            return function () {
+              pagination.gotoPage(i);
+            };
+          })(i);
+        }
+
+        fragment.appendChild(el);
+      }
+      paginationEl.appendChild(fragment);
     }
 
     // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수
@@ -263,6 +300,7 @@ const MapContainer = ({
         <div id="myMap" />
         <div id="menu_wrap">
           <ul id="placesList"></ul>
+          <div id="pagination" />
         </div>
       </div>
     </div>
