@@ -93,7 +93,6 @@ const MapContainer = ({
           });
 
           kakao.maps.event.addListener(marker, "click", function () {
-            console.log(title);
             searchSubmit(title);
           });
           itemEl.onmouseover = function () {
@@ -174,7 +173,8 @@ const MapContainer = ({
           : (jjimBtn.innerHTML = "찜");
         if(currentMode==="jjimlists"){
           el.remove();
-          markers[index].setMap(null)
+          markers[index].setMap(null);
+          infowindow.close()
         }
         else{
           markers[index].setMap(null)
@@ -185,7 +185,6 @@ const MapContainer = ({
           else{
             const marker = addMarker(placePosition, index, true)
           }
-          console.log(markers)
         }
       });
       el.appendChild(jjimBtn);
